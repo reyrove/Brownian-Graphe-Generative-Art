@@ -2,413 +2,1710 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Brownian Graphe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Brownian Graphe · Computational Textile Design</title>
+  <meta name="description" content="Brownian Graphe — a seed-based generative system for bouncing graph networks. A catalogue of computational textile compositions for fashion, textile and surface design.">
   <meta name="theme-color" content="#0a0a0a">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="icon" type="image/svg+xml" href="fav.svg">
-  
+  <link rel="icon" type="image/svg+xml" href="images/fav.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
   <style>
-    /* --- PERFECT RESET --- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    /* ============================================================
+       BROWNIAN GRAPHE · CATALOGUE EDITION
+    ============================================================ */
+
+    :root {
+      --bg: #0a0a0a;
+      --bg-soft: #0f0f0e;
+      --paper: #f4f1ea;
+      --paper-soft: #ebe6db;
+      --ink: #141414;
+      --ink-soft: #5a5650;
+
+      --gold: #b8935a;
+      --gold-soft: #d4b483;
+      --gold-deep: #80633b;
+
+      --line: rgba(244, 241, 234, 0.10);
+      --line-dark: rgba(20, 20, 20, 0.14);
+
+      --text: rgba(244, 241, 234, 0.88);
+      --text-dim: rgba(244, 241, 234, 0.48);
+      --text-faint: rgba(244, 241, 234, 0.22);
+
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --mono: "DM Mono", ui-monospace, monospace;
+
+      --page: min(1180px, calc(100% - 64px));
     }
-    
-    html, body {
-      background: #0a0a0a;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      min-height: 100dvh;
-      overflow: hidden;
-      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', Roboto, Arial, sans-serif;
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+      overflow-x: hidden;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      touch-action: none;
-      -webkit-tap-highlight-color: transparent;
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      height: 100dvh;
-    }
-    
-    /* --- MAIN CONTAINER --- */
-    #main-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 100%;
-      height: 100dvh;
-      padding: 20px;
-      gap: 8px;
-    }
-    
-    /* --- TITLE (CENTER TOP) --- */
-    .title-bar {
-      text-align: center;
-      flex-shrink: 0;
-      padding: 2px 0;
+      overflow-x: hidden;
       width: 100%;
     }
-    .title-bar .title {
-      font-size: 22px;
-      font-weight: 300;
-      letter-spacing: 8px;
-      color: rgba(255,255,255,0.85);
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    img, canvas { display: block; max-width: 100%; height: auto; }
+
+    ::selection { background: var(--gold); color: var(--bg); }
+
+    .page {
+      width: var(--page);
+      margin: 0 auto;
+      max-width: 100%;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      color: var(--gold-soft);
+      font-size: 10px;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
     }
-    .title-bar .title .accent {
-      color: #c9a84c;
-      font-weight: 400;
+
+    .section {
+      padding: 140px 0;
+      border-top: 1px solid var(--line);
     }
-    
-    /* --- CANVAS CONTAINER --- */
-    #canvas-container {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      min-height: 0;
-      padding: 0 10px;
-      position: relative;
-      cursor: pointer;
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 40px;
+      margin-bottom: 80px;
+      align-items: baseline;
     }
-    
-    canvas {
-      display: block;
-      box-shadow: 0 0 80px rgba(0,0,0,0.9);
-      image-rendering: auto;
-      touch-action: none;
-      max-width: 100%;
-      max-height: 100%;
-      width: auto;
-      height: auto;
-      object-fit: contain;
-      border-radius: 2px;
-      transition: opacity 0.6s ease, transform 0.6s ease;
-      background: #0a0a0a;
+
+    .section-number {
+      color: var(--text-faint);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
     }
-    
-    /* --- SHIRT MOCKUP --- */
-    #shirt-mockup {
-      display: none;
-      max-width: 100%;
-      max-height: 100%;
-      width: auto;
-      height: auto;
-      object-fit: contain;
-      border-radius: 2px;
-      box-shadow: 0 0 80px rgba(0,0,0,0.9);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2.6rem, 5.4vw, 4.8rem);
+      font-weight: 300;
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      color: var(--paper);
     }
-    #shirt-mockup.active {
-      display: block;
-      animation: fadeIn 0.6s ease;
+
+    .section-title em { font-style: italic; color: var(--gold-soft); }
+
+    /* RIBBON */
+    .ribbon {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 20px;
+      padding: 18px 32px;
+      background: rgba(10, 10, 10, 0.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-faint);
     }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    
-    canvas.hidden {
-      display: none;
-    }
-    
-    /* --- BOTTOM BAR --- */
-    .bottom-bar {
+
+    .ribbon-brand {
+      font-family: var(--serif);
+      font-size: 18px;
+      letter-spacing: -0.01em;
+      text-transform: none;
+      color: var(--paper);
       flex-shrink: 0;
+    }
+    .ribbon-brand em { color: var(--gold-soft); font-style: italic; }
+
+    .ribbon-nav {
+      display: flex;
+      gap: 28px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      -webkit-overflow-scrolling: touch;
+      flex-shrink: 1;
+      min-width: 0;
+    }
+    .ribbon-nav::-webkit-scrollbar { display: none; }
+
+    .ribbon-nav a {
+      transition: color 300ms ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .ribbon-nav a:hover { color: var(--gold-soft); }
+
+    @media (max-width: 720px) {
+      .ribbon { padding: 12px 16px; gap: 14px; }
+      .ribbon-brand { font-size: 15px; }
+      .ribbon-nav {
+        gap: 18px;
+        font-size: 9px;
+        mask-image: linear-gradient(to right, black 0, black calc(100% - 20px), transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, black 0, black calc(100% - 20px), transparent 100%);
+      }
+    }
+
+    /* COVER */
+    .cover {
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: 120px 0 60px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      width: 100%;
-      gap: 6px;
-      padding: 4px 0;
+      justify-content: space-between;
+      gap: 60px;
     }
-    
-    /* --- CONTROLS --- */
-    .controls-row {
-      display: flex;
-      gap: 8px;
+
+    .cover-meta {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 16px;
       flex-wrap: wrap;
-      justify-content: center;
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-faint);
+    }
+    .cover-meta .vol { color: var(--gold-soft); }
+
+    .cover-body {
+      display: grid; grid-template-columns: 1fr; gap: 50px;
+      align-items: center; flex: 1;
+    }
+
+    @media (min-width: 900px) {
+      .cover-body { grid-template-columns: 1.1fr 0.9fr; gap: 80px; }
+    }
+
+    .cover-text { display: flex; flex-direction: column; gap: 32px; }
+
+    .cover-title {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      color: var(--paper);
+    }
+    .cover-title em { font-style: italic; color: var(--gold-soft); }
+
+    .cover-sub {
+      font-family: var(--serif);
+      font-size: clamp(1.3rem, 1.9vw, 1.7rem);
+      font-weight: 300; font-style: italic;
+      line-height: 1.4;
+      color: var(--text-dim);
+      max-width: 500px;
+    }
+
+    .cover-desc {
+      color: var(--text-dim);
+      font-size: 13px;
+      line-height: 1.8;
+      max-width: 460px;
+    }
+
+    .cover-art {
+      position: relative;
+      aspect-ratio: 1;
+      background: #000;
+      border: 1px solid var(--line);
+      overflow: hidden;
+      max-width: 520px;
+      margin-left: auto;
+      width: 100%;
+    }
+
+    #coverCanvas { width: 100%; height: 100%; display: block; }
+
+    .cover-foot {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--line);
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-faint);
+    }
+    .cover-foot .k { display: block; color: var(--gold-soft); margin-bottom: 8px; }
+    .cover-foot .v { color: var(--text-dim); letter-spacing: 0.1em; line-height: 1.7; }
+
+    @media (max-width: 720px) {
+      .cover { padding: 100px 0 40px; gap: 40px; }
+      .cover-title { font-size: clamp(2.6rem, 14vw, 4.5rem); }
+      .cover-art { margin: 0 auto; }
+      .cover-foot { grid-template-columns: 1fr; gap: 20px; }
+    }
+
+    /* STATEMENT */
+    .statement {
+      background: var(--bg-soft);
+      border-top: 1px solid var(--line);
+      padding: 140px 0;
+    }
+
+    .statement-inner {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .statement-label {
+      position: sticky;
+      top: 100px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--gold-soft);
+    }
+
+    .statement-label .num {
+      display: block;
+      color: var(--text-faint);
+      margin-bottom: 8px;
+    }
+
+    .statement-body {
+      max-width: 720px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .statement-lead {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3vw, 2.6rem);
+      font-weight: 300;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      color: var(--paper);
+    }
+
+    .statement-lead em {
+      font-style: italic;
+      color: var(--gold-soft);
+    }
+
+    .statement-body p {
+      color: var(--text-dim);
+      font-size: 13.5px;
+      line-height: 1.9;
+      max-width: 62ch;
+    }
+
+    .statement-body p strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .statement-ai {
+      margin-top: 24px;
+      padding: 22px 26px;
+      border-left: 2px solid var(--gold);
+      background: rgba(184, 147, 90, 0.04);
+      color: var(--text-dim);
+      font-size: 12.5px;
+      line-height: 1.8;
+      font-style: italic;
+    }
+
+    .statement-ai strong {
+      color: var(--gold-soft);
+      font-style: normal;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 900px) {
+      .statement { padding: 90px 0; }
+      .statement-inner { grid-template-columns: 1fr; gap: 28px; }
+      .statement-label { position: static; }
+    }
+
+    @media (max-width: 720px) {
+      .statement { padding: 72px 0; }
+      .statement-ai { padding: 18px 20px; font-size: 12px; }
+    }
+
+    /* WORK */
+    .work-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.75fr);
+      gap: 80px;
       align-items: center;
     }
-    
-    .controls {
-      color: rgba(255,255,255,0.7);
-      background: rgba(255,255,255,0.04);
-      padding: 8px 20px;
-      border-radius: 30px;
-      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', Roboto, Arial, sans-serif;
-      font-size: 11px;
+
+    @media (max-width: 900px) {
+      .work-layout { grid-template-columns: 1fr; gap: 56px; }
+    }
+
+    .art-stage {
+      position: relative;
+      background: #000;
+      border: 1px solid var(--line);
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .art-stage canvas {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      cursor: crosshair;
+    }
+
+    @media (max-width: 720px) {
+      .art-stage { padding: 16px; }
+    }
+
+    .work-info { display: flex; flex-direction: column; gap: 32px; }
+
+    .work-index {
+      color: var(--gold-soft);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+    }
+
+    .work-title {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 3.6vw, 3.6rem);
+      font-weight: 300;
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      color: var(--paper);
+    }
+    .work-title em { display: block; font-style: italic; color: var(--gold-soft); }
+
+    .work-description {
+      color: var(--text-dim);
+      font-size: 12.5px;
+      line-height: 1.8;
+      max-width: 40ch;
+    }
+
+    .metadata { border-top: 1px solid var(--line); }
+
+    .meta-row {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 20px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+
+    .meta-label {
+      color: var(--text-faint);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .meta-value {
+      color: var(--paper);
+      font-family: var(--serif);
+      font-size: 16px;
       font-weight: 400;
-      border: 1px solid rgba(255,255,255,0.08);
-      text-align: center;
+      text-align: right;
+    }
+
+    .controls { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .btn {
+      appearance: none;
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--text-dim);
+      min-height: 46px;
+      padding: 0 24px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
       cursor: pointer;
-      user-select: none;
-      -webkit-user-select: none;
-      transition: all 0.3s ease;
-      letter-spacing: 0.8px;
-      touch-action: manipulation;
-      min-height: 36px;
+      transition: color 300ms ease, border-color 300ms ease, background 300ms ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
     }
-    .controls:hover {
-      color: rgba(255,255,255,0.95);
-      border-color: rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.08);
+    .btn:hover { color: var(--paper); border-color: var(--gold); }
+    .btn.primary { color: var(--gold-soft); border-color: var(--gold); }
+    .btn.primary:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+
+    @media (max-width: 720px) {
+      .controls { width: 100%; }
+      .btn { flex: 1; padding: 0 16px; }
     }
-    .controls:active {
-      transform: scale(0.95);
+
+    /* APPLICATION */
+    .application {
+      background: var(--paper);
+      color: var(--ink);
+      border-top: 0;
+      padding: 140px 0;
     }
-    .controls .key {
-      color: rgba(255,255,255,0.5);
+
+    .application .section-number { color: rgba(20, 20, 20, 0.4); }
+    .application .section-title { color: var(--ink); }
+    .application .section-title em { color: var(--gold-deep); }
+
+    .application-intro {
+      max-width: 640px;
+      margin: 0 0 80px auto;
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 2.4vw, 2.2rem);
       font-weight: 300;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      color: var(--ink);
     }
-    .controls .sep {
-      color: rgba(255,255,255,0.15);
-      margin: 0 4px;
-    }
-    
-    /* --- SHIRT BUTTON --- */
-    .controls.shirt-btn {
-      border-color: rgba(201, 168, 76, 0.2);
-      color: rgba(201, 168, 76, 0.7);
-      letter-spacing: 1px;
-    }
-    .controls.shirt-btn:hover {
-      border-color: rgba(201, 168, 76, 0.4);
-      color: #c9a84c;
-      background: rgba(201, 168, 76, 0.06);
-    }
-    .controls.shirt-btn.active {
-      border-color: rgba(201, 168, 76, 0.5);
-      color: #c9a84c;
-      background: rgba(201, 168, 76, 0.08);
-    }
-    .controls.shirt-btn .icon {
-      font-size: 14px;
-      line-height: 1;
-    }
-    
-    /* --- INFO ROW --- */
-    .info-row {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 14px;
-      color: rgba(255,255,255,0.3);
-      font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
-      font-size: 9px;
-      letter-spacing: 0.5px;
-      flex-wrap: wrap;
-      padding: 2px 0;
-    }
-    .info-row .info-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 12px;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.04);
-      background: rgba(255,255,255,0.02);
-    }
-    .info-row .label {
-      color: rgba(255,255,255,0.25);
-      font-weight: 300;
-    }
-    .info-row .value {
-      color: rgba(255,255,255,0.6);
-      font-weight: 400;
-    }
-    
-    /* --- DESCRIPTION --- */
-    .description {
-      display: block;
-      text-align: center;
-      color: rgba(255,255,255,0.25);
-      font-size: 8px;
-      letter-spacing: 1.2px;
-      line-height: 1.8;
-      padding: 2px 10px;
-      font-weight: 300;
-      max-width: 500px;
+    .application-intro span { color: var(--ink-soft); font-style: italic; }
+
+    .framed-plate {
+      position: relative;
       width: 100%;
+      padding: 80px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--paper-soft);
+      border: 1px solid var(--line-dark);
+    }
+
+    .framed-plate::before {
+      content: "PLATE 001 / ARCHIVAL PRINT";
+      position: absolute;
+      top: 24px;
+      left: 28px;
+      color: rgba(20, 20, 20, 0.42);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
     }
-    .description .highlight {
-      color: rgba(255,255,255,0.4);
+
+    .framed-plate::after {
+      content: "BROWNIAN GRAPHE × REYROVE";
+      position: absolute;
+      right: 28px;
+      bottom: 24px;
+      color: rgba(20, 20, 20, 0.42);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
     }
-    .description .sep {
-      color: rgba(255,255,255,0.08);
-      margin: 0 4px;
+
+    .frame-inner {
+      position: relative;
+      padding: 28px;
+      background: var(--paper);
+      box-shadow:
+        0 1px 0 rgba(20,20,20,0.06),
+        0 20px 60px rgba(20,20,20,0.14),
+        0 4px 14px rgba(20,20,20,0.08);
+      max-width: 560px;
+      width: 100%;
     }
-    
-    /* ============================================
-       RESPONSIVE
-    ============================================ */
-    
-    @media (max-width: 1024px) {
-      #main-container { padding: 16px; gap: 6px; }
-      .title-bar .title { font-size: 20px; letter-spacing: 6px; }
-      .controls { font-size: 10px; padding: 7px 16px; min-height: 34px; }
-      .info-row { font-size: 8.5px; gap: 12px; }
-      .info-row .info-item { padding: 2px 10px; }
-      .description { font-size: 7.5px; letter-spacing: 1px; }
+
+    .frame-inner::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(20, 20, 20, 0.18);
+      pointer-events: none;
     }
-    
-    @media (max-width: 768px) {
-      #main-container { padding: 12px; gap: 5px; }
-      .title-bar .title { font-size: 17px; letter-spacing: 5px; }
-      #canvas-container { padding: 0 6px; }
-      .controls { font-size: 9px; padding: 6px 14px; min-height: 32px; letter-spacing: 0.6px; }
-      .controls-row { gap: 6px; }
-      .info-row { font-size: 8px; gap: 10px; }
-      .info-row .info-item { padding: 2px 8px; }
-      .description { font-size: 7px; letter-spacing: 0.8px; padding: 2px 6px; }
-      .controls.shirt-btn .icon { font-size: 12px; }
+
+    .frame-inner canvas {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1;
+      background: #000;
     }
-    
-    @media (max-width: 480px) {
-      #main-container { padding: 8px; gap: 4px; }
-      .title-bar .title { font-size: 14px; letter-spacing: 4px; }
-      #canvas-container { padding: 0 4px; }
-      .controls { font-size: 8px; padding: 5px 12px; min-height: 28px; border-radius: 24px; letter-spacing: 0.4px; }
-      .controls-row { gap: 4px; }
-      .info-row { font-size: 7px; gap: 8px; }
-      .info-row .info-item { padding: 2px 6px; gap: 4px; }
-      .description { font-size: 6.5px; letter-spacing: 0.6px; padding: 2px 4px; line-height: 1.6; }
-      .controls.shirt-btn .icon { font-size: 11px; }
+
+    .frame-caption {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 20px;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(20, 20, 20, 0.5);
     }
-    
+    .frame-caption .id { color: var(--gold-deep); }
+
+    .surface-head {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin-top: 100px;
+      margin-bottom: 48px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--line-dark);
+      align-items: baseline;
+    }
+
+    .surface-head h3 {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+    .surface-head h3 em { font-style: italic; color: var(--gold-deep); }
+
+    .surface-head p {
+      max-width: 44ch;
+      color: var(--ink-soft);
+      font-size: 12.5px;
+      line-height: 1.75;
+    }
+
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line-dark);
+      border: 1px solid var(--line-dark);
+    }
+
+    .surface-item {
+      background: var(--paper);
+      padding: 28px 24px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .surface-item .surface-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(20, 20, 20, 0.5);
+    }
+    .surface-item .surface-label .num { color: var(--gold-deep); }
+
+    .surface-item .surface-canvas-wrap {
+      width: 100%;
+      background: #000;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .surface-item canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .surface-item .surface-title {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--ink);
+    }
+
+    .surface-item .surface-meta {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(20, 20, 20, 0.45);
+    }
+
+    @media (max-width: 1000px) {
+      .surface-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 720px) {
+      .application { padding: 72px 0; }
+      .application-intro { margin-left: 0; margin-bottom: 48px; }
+      .framed-plate { padding: 32px 12px; }
+      .framed-plate::before { top: 14px; left: 16px; font-size: 8px; }
+      .framed-plate::after { right: 16px; bottom: 14px; font-size: 8px; }
+      .frame-inner { padding: 14px; }
+      .frame-caption { font-size: 8px; gap: 10px; flex-wrap: wrap; }
+      .surface-head { grid-template-columns: 1fr; gap: 16px; margin-top: 56px; }
+      .surface-grid { grid-template-columns: 1fr; }
+    }
+
+    /* PROCESS */
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .process-card {
+      min-height: 340px;
+      padding: 44px 40px;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .process-number {
+      color: var(--gold);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .process-card h3 {
+      margin: auto 0 20px;
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--paper);
+    }
+
+    .process-card p {
+      max-width: 300px;
+      color: var(--text-dim);
+      font-size: 12.5px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 900px) {
+      .process-grid { grid-template-columns: 1fr; }
+      .process-card { min-height: auto; padding: 36px 32px; }
+      .process-card h3 { margin-top: 32px; }
+    }
+
+    @media (max-width: 720px) {
+      .process-card { padding: 28px 24px; }
+    }
+
+    /* ARCHIVE */
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .archive-item {
+      background: var(--bg);
+      aspect-ratio: 1;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+      transition: opacity 300ms ease;
+    }
+
+    .archive-item canvas { width: 100%; height: 100%; display: block; }
+
+    .archive-item::after {
+      content: attr(data-seed);
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      color: rgba(244, 241, 234, 0.4);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      transition: color 300ms ease;
+    }
+
+    .archive-item:hover::after { color: var(--gold-soft); }
+
+    .archive-note {
+      margin-top: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      flex-wrap: wrap;
+      color: var(--text-faint);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .archive-note .hint { color: var(--gold-soft); }
+
+    @media (max-width: 900px) {
+      .archive-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* COMMISSION */
+    .commission {
+      background: var(--bg-soft);
+      padding: 140px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .commission-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 100px;
+      align-items: center;
+    }
+
+    .commission-title {
+      margin-top: 26px;
+      font-family: var(--serif);
+      font-size: clamp(3rem, 5.6vw, 5.6rem);
+      font-weight: 300;
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      color: var(--paper);
+    }
+    .commission-title em { font-style: italic; color: var(--gold-soft); }
+
+    .commission-copy {
+      max-width: 440px;
+      color: var(--text-dim);
+      font-size: 12.5px;
+      line-height: 1.85;
+      margin-bottom: 44px;
+    }
+
+    .service-list {
+      border-top: 1px solid var(--line);
+      margin-bottom: 48px;
+    }
+
+    .service-item {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+
+    .service-item .num { color: var(--gold); font-size: 10px; letter-spacing: 0.22em; }
+    .service-item .title {
+      display: block;
+      color: var(--paper);
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .service-item .desc {
+      color: var(--text-dim);
+      font-size: 12px;
+      line-height: 1.7;
+      max-width: 40ch;
+    }
+
+    .contact-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      padding: 0 32px;
+      background: var(--gold);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      transition: background 300ms ease;
+    }
+    .contact-cta:hover { background: var(--gold-soft); }
+
+    @media (max-width: 900px) {
+      .commission { padding: 90px 0; }
+      .commission-layout { grid-template-columns: 1fr; gap: 60px; }
+    }
+
+    @media (max-width: 720px) {
+      .commission { padding: 72px 0; }
+      .commission-layout { gap: 48px; }
+      .contact-cta { width: 100%; }
+    }
+
+    /* COLOPHON */
+    .colophon {
+      padding: 80px 0 60px;
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 40px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+
+    .colophon .col-mark {
+      display: block;
+      font-family: var(--serif);
+      font-size: 22px;
+      font-style: italic;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--paper);
+      margin-bottom: 12px;
+    }
+    .colophon .col-mark em { color: var(--gold-soft); }
+
+    .colophon .col p {
+      color: var(--text-dim);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: none;
+      line-height: 1.8;
+      max-width: 30ch;
+    }
+
+    .colophon .col-title {
+      display: block;
+      color: var(--gold-soft);
+      margin-bottom: 16px;
+    }
+
+    .colophon .col a {
+      display: block;
+      color: var(--text-dim);
+      line-height: 2.1;
+      transition: color 300ms ease;
+      letter-spacing: 0.14em;
+      word-break: break-word;
+    }
+    .colophon .col a:hover { color: var(--gold-soft); }
+
+    .colophon-end {
+      grid-column: 1 / -1;
+      border-top: 1px solid var(--line);
+      padding-top: 32px;
+      margin-top: 32px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      color: var(--text-faint);
+    }
+
+    .colophon-end .mark {
+      color: var(--gold-soft);
+      font-family: var(--serif);
+      font-size: 14px;
+      font-style: italic;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    @media (max-width: 900px) {
+      .colophon { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .colophon { grid-template-columns: 1fr 1fr; gap: 24px; }
+    }
+
     @media (max-width: 380px) {
-      #main-container { padding: 6px; gap: 3px; }
-      .title-bar .title { font-size: 12px; letter-spacing: 3px; }
-      #canvas-container { padding: 0 2px; }
-      .controls { font-size: 7px; padding: 4px 10px; min-height: 26px; border-radius: 20px; }
-      .info-row { font-size: 6.5px; gap: 6px; }
-      .info-row .info-item { padding: 1px 5px; border-radius: 14px; }
-      .description { font-size: 6px; letter-spacing: 0.5px; padding: 1px 3px; }
-      .controls.shirt-btn .icon { font-size: 10px; }
+      .colophon { grid-template-columns: 1fr; gap: 28px; }
     }
-    
-    @media (orientation: landscape) and (max-height: 500px) {
-      #main-container { padding: 10px 20px; gap: 4px; flex-direction: row; flex-wrap: wrap; }
-      .title-bar { width: 100%; flex-shrink: 0; }
-      .title-bar .title { font-size: 16px; letter-spacing: 4px; }
-      #canvas-container { flex: 1; min-height: 0; height: 100%; padding: 0 8px; }
-      .bottom-bar { width: auto; max-width: 180px; flex-shrink: 0; gap: 4px; padding: 0 4px; }
-      .controls { font-size: 8px; padding: 5px 12px; min-height: 28px; letter-spacing: 0.4px; }
-      .controls-row { flex-direction: column; gap: 4px; }
-      .info-row { font-size: 7px; gap: 6px; flex-direction: column; align-items: stretch; }
-      .info-row .info-item { padding: 2px 8px; justify-content: center; }
-      .description { font-size: 6px; max-width: 160px; padding: 1px 4px; line-height: 1.4; letter-spacing: 0.5px; }
+
+    /* MOCKUP GALLERY */
+    .mockup-gallery {
+      margin-top: 120px;
+      padding-top: 80px;
+      border-top: 1px solid var(--line);
     }
-    
-    @media (orientation: landscape) and (max-height: 380px) {
-      #main-container { padding: 6px 12px; gap: 3px; }
-      .title-bar .title { font-size: 13px; letter-spacing: 3px; }
-      #canvas-container { padding: 0 4px; }
-      .bottom-bar { max-width: 140px; gap: 3px; }
-      .controls { font-size: 7px; padding: 4px 10px; min-height: 24px; border-radius: 16px; }
-      .info-row { font-size: 6px; gap: 4px; }
-      .info-row .info-item { padding: 1px 6px; }
-      .description { font-size: 5.5px; max-width: 120px; padding: 1px 3px; }
+
+    .mockup-head {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 40px;
+      margin-bottom: 60px;
+      align-items: baseline;
     }
-    
-    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-      canvas { image-rendering: auto; }
+
+    .mockup-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--paper);
     }
-    
-    @supports (-webkit-touch-callout: none) {
-      .controls { min-height: 40px; }
+
+    .mockup-title em {
+      font-style: italic;
+      color: var(--gold-soft);
     }
-    
+
+    .mockup-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .mockup-item {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .mockup-frame {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      background: #000;
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .mockup-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 800ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .mockup-item:hover .mockup-frame img {
+      transform: scale(1.04);
+    }
+
+    .mockup-item figcaption {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      padding-top: 4px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .mockup-id { color: var(--paper); }
+    .mockup-seed { color: var(--gold-soft); }
+
+    .mockup-note {
+      margin-top: 48px;
+      max-width: 56ch;
+      color: var(--text-dim);
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .mockup-gallery { margin-top: 80px; padding-top: 56px; }
+      .mockup-head { grid-template-columns: 1fr; gap: 16px; margin-bottom: 40px; }
+      .mockup-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+
+    /* LEGAL MODAL */
+    .legal-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .legal-modal.open { display: flex; }
+
+    .legal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.78);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      animation: legalFade 280ms ease;
+    }
+
+    .legal-dialog {
+      position: relative;
+      width: min(560px, 100%);
+      max-height: 82vh;
+      overflow-y: auto;
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      padding: 48px 44px 32px;
+      animation: legalRise 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .legal-close {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      background: transparent;
+      border: 0;
+      color: var(--text-faint);
+      font-size: 26px;
+      line-height: 1;
+      cursor: pointer;
+      transition: color 300ms ease;
+    }
+    .legal-close:hover { color: var(--gold-soft); }
+
+    .legal-eyebrow {
+      display: inline-block;
+      color: var(--gold-soft);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .legal-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      color: var(--paper);
+      margin-bottom: 24px;
+    }
+
+    .legal-body {
+      color: var(--text-dim);
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.9;
+    }
+    .legal-body p { margin-bottom: 14px; }
+    .legal-body p:last-child { margin-bottom: 0; }
+    .legal-body strong { color: var(--text); font-weight: 500; }
+
+    .legal-foot {
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+    .legal-foot a { color: var(--gold-soft); word-break: break-all; }
+
+    @keyframes legalFade { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes legalRise {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 560px) {
+      .legal-dialog { padding: 40px 24px 24px; }
+    }
+
+    /* GLOBAL MOBILE */
+    @media (max-width: 720px) {
+      :root { --page: min(1180px, calc(100% - 32px)); }
+      .section { padding: 72px 0; }
+      .section-head { grid-template-columns: 1fr; gap: 12px; margin-bottom: 48px; }
+      .section-title { font-size: clamp(2rem, 8vw, 3rem); }
+    }
+
+    @media (max-width: 400px) {
+      :root { --page: min(1180px, calc(100% - 24px)); }
+    }
+
     @media (prefers-reduced-motion: reduce) {
-      .controls, canvas, #shirt-mockup { transition: none; }
-      #shirt-mockup.active { animation: none; }
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        transition-duration: 0.001ms !important;
+        animation-duration: 0.001ms !important;
+      }
     }
   </style>
 </head>
 <body>
 
-<!-- MAIN CONTAINER -->
-<div id="main-container">
+<!-- RIBBON -->
+<nav class="ribbon">
+  <span class="ribbon-brand">Brownian <em>Graphe</em></span>
+  <div class="ribbon-nav">
+    <a href="#statement">Statement</a>
+    <a href="#work">Plate</a>
+    <a href="#application">Surfaces</a>
+    <a href="#archive">Archive</a>
+    <a href="#commission">Commission</a>
+  </div>
+</nav>
 
-  <!-- TITLE (CENTER TOP) -->
-  <div class="title-bar">
-    <div class="title"><span class="accent">Brownian</span> Graphe</div>
+<!-- COVER -->
+<header class="cover page">
+
+  <div class="cover-meta">
+    <span class="vol">Brownian Graphe — Catalogue</span>
+    <span>Computational Textile Design</span>
   </div>
 
-  <!-- CANVAS CONTAINER -->
-  <div id="canvas-container">
-    <canvas id="target"></canvas>
-    <img id="shirt-mockup" src="Brownian-Graphe.jpg" alt="Brownian Graphe on T-Shirt" />
-  </div>
+  <div class="cover-body">
 
-  <!-- BOTTOM BAR -->
-  <div class="bottom-bar">
+    <div class="cover-text">
+      <span class="eyebrow">A study in generative motion</span>
 
-    <!-- CONTROLS ROW -->
-    <div class="controls-row">
-      <div class="controls" id="controlsBar">
-        <span class="key">●</span> regenerate <span class="sep">—</span> <span class="key">S</span> save
-      </div>
-      <div class="controls shirt-btn" id="shirtToggle">
-        <span class="icon">◷</span> apparel
-      </div>
+      <h1 class="cover-title">Brownian<em>Graphe</em></h1>
+
+      <p class="cover-sub">
+        A bouncing graph network — points in motion, links in tension,
+        algorithmically drawn, seed-documented, and ready for textile production.
+      </p>
+
+      <p class="cover-desc">
+        For fashion houses, textile studios and surface designers.
+        Each composition is generated from a single numeric seed and
+        can be licensed, adapted or commissioned to your brief.
+      </p>
     </div>
 
-    <!-- INFO ROW -->
-    <div class="info-row">
-      <div class="info-item">
-        <span class="label">seed</span>
-        <span class="value" id="seedDisplay">---</span>
-      </div>
-      <div class="info-item">
-        <span class="label">points</span>
-        <span class="value" id="pointsDisplay">---</span>
-      </div>
-      <div class="info-item">
-        <span class="label">links</span>
-        <span class="value" id="linksDisplay">---</span>
-      </div>
-    </div>
-
-    <!-- DESCRIPTION -->
-    <div class="description">
-      <span class="highlight">graph networks</span>
-      <span class="sep">·</span>
-      <span class="highlight">click to add</span>
-      <span class="sep">·</span>
-      <span class="highlight">bouncing points</span>
-      <span class="sep">·</span>
-      <span class="highlight">seed-based</span>
+    <div class="cover-art">
+      <canvas id="coverCanvas"></canvas>
     </div>
 
   </div>
 
+  <div class="cover-foot">
+    <div>
+      <span class="k">Issue</span>
+      <span class="v">Brownian Graphe — Autumn 2026</span>
+    </div>
+    <div>
+      <span class="k">Discipline</span>
+      <span class="v">Computational Textile</span>
+    </div>
+    <div>
+      <span class="k">Edition</span>
+      <span class="v">Seed-based · Open series</span>
+    </div>
+  </div>
+
+</header>
+
+<!-- STATEMENT -->
+<section class="statement" id="statement">
+
+  <div class="page">
+    <div class="statement-inner">
+
+      <div class="statement-label">
+        <span class="num">00 / Statement</span>
+        Artist Statement
+      </div>
+
+      <div class="statement-body">
+
+        <p class="statement-lead">
+          A graph, when it is <em>set in motion</em>,
+          becomes a swarm — links stretching, points colliding,
+          structure emerging from pressure.
+        </p>
+
+        <p>
+          I am an Iranian-born artist working at the intersection of
+          classical ornament and generative systems. My work begins
+          with a simple observation: the network — points and their
+          links — has always carried motion. Roads, constellations,
+          weaving drafts, trade routes. A graph is not a picture of
+          stillness; it is a picture of relationship under tension.
+        </p>
+
+        <p>
+          <strong>Brownian Graphe</strong> is a seed-based generative
+          system that translates that tension into code. Each
+          composition is built from a small set of points — some
+          connected, some free — bouncing inside the frame with
+          simulated Brownian motion. Where points collide, they
+          swap velocities and invert colour. Where they approach,
+          the lines between them shift in brightness by distance.
+        </p>
+
+        <p>
+          The number of points, the density of the graph, the
+          boundary buffer, the ball diameter, and the background
+          gradient are all derived from a single numeric seed. The
+          plate is live: you may click anywhere on it to add a new
+          point, and the graph will rewire itself around it.
+        </p>
+
+        <div class="statement-ai">
+          <strong>On AI tools —</strong> where I encountered technical
+          obstacles, I turned to AI tools for debugging and code
+          optimization. Every structural, aesthetic, and conceptual
+          decision remained my own.
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- PLATE -->
+<section class="section page" id="work">
+
+  <div class="section-head">
+    <span class="section-number">01 / Plate</span>
+    <h2 class="section-title">
+      In tension,<br />
+      not just <em>at rest.</em>
+    </h2>
+  </div>
+
+  <div class="work-layout">
+
+    <div class="art-stage" id="canvas-container">
+      <canvas id="target"></canvas>
+    </div>
+
+    <aside class="work-info">
+
+      <span class="work-index">Brownian Graphe · Catalogue Entry 001</span>
+
+      <h3 class="work-title">
+        Generative
+        <em>Networks</em>
+        System
+      </h3>
+
+      <p class="work-description">
+        A bouncing graph system — points in Brownian motion, linked
+        in a symmetric matrix, their collisions inverting colour and
+        swapping velocity. Each composition is generated from a
+        seed, allowing the swarm to vary while its structural
+        identity remains fixed. Click anywhere on the plate to add
+        a new point.
+      </p>
+
+      <div class="metadata">
+        <div class="meta-row">
+          <span class="meta-label">Seed</span>
+          <span class="meta-value" id="seedDisplay">—</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Points</span>
+          <span class="meta-value" id="pointsDisplay">—</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Links</span>
+          <span class="meta-value" id="linksDisplay">—</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Motion</span>
+          <span class="meta-value">Brownian · Live</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Edition</span>
+          <span class="meta-value">Open Series</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn primary" id="controlsBar" type="button">New Seed</button>
+        <button class="btn" id="saveBtn" type="button">Download</button>
+      </div>
+
+    </aside>
+
+  </div>
+
+</section>
+
+<!-- APPLICATION -->
+<section class="application" id="application">
+
+  <div class="page">
+
+    <div class="section-head">
+      <span class="section-number">02 / Surfaces</span>
+      <h2 class="section-title">
+        One composition.<br />
+        <em>Many surfaces.</em>
+      </h2>
+    </div>
+
+    <p class="application-intro">
+      The same seed, presented as an archival print —
+      <span>and applied across fabric, scarf, textile and wall surfaces
+      without loss of structure.</span>
+    </p>
+
+    <div class="framed-plate">
+      <div class="frame-inner">
+        <canvas id="frameCanvas"></canvas>
+        <div class="frame-caption">
+          <span class="id">Plate 001</span>
+          <span>Archival print · 1 : 1 · Open edition</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="surface-head">
+      <h3>
+        Applied across <em>surfaces.</em>
+      </h3>
+      <p>
+        Every surface below is drawn from the same numeric seed —
+        its repeat, orientation and scale adapted to the material,
+        while the underlying structural logic remains identical.
+      </p>
+    </div>
+
+    <div class="surface-grid">
+
+      <div class="surface-item">
+        <div class="surface-label">
+          <span class="num">i</span>
+          <span>Print</span>
+        </div>
+        <div class="surface-canvas-wrap" style="aspect-ratio: 1;">
+          <canvas id="surfacePrint"></canvas>
+        </div>
+        <div class="surface-title">Archival print</div>
+        <div class="surface-meta">1 : 1 · Cotton rag</div>
+      </div>
+
+      <div class="surface-item">
+        <div class="surface-label">
+          <span class="num">ii</span>
+          <span>Scarf</span>
+        </div>
+        <div class="surface-canvas-wrap" style="aspect-ratio: 3 / 1;">
+          <canvas id="surfaceScarf"></canvas>
+        </div>
+        <div class="surface-title">Silk scarf</div>
+        <div class="surface-meta">3 : 1 · Twill silk</div>
+      </div>
+
+      <div class="surface-item">
+        <div class="surface-label">
+          <span class="num">iii</span>
+          <span>Textile</span>
+        </div>
+        <div class="surface-canvas-wrap" style="aspect-ratio: 4 / 3;">
+          <canvas id="surfaceTextile"></canvas>
+        </div>
+        <div class="surface-title">Fabric yardage</div>
+        <div class="surface-meta">4 : 3 · Repeat tile</div>
+      </div>
+
+      <div class="surface-item">
+        <div class="surface-label">
+          <span class="num">iv</span>
+          <span>Wall</span>
+        </div>
+        <div class="surface-canvas-wrap" style="aspect-ratio: 2 / 3;">
+          <canvas id="surfaceWall"></canvas>
+        </div>
+        <div class="surface-title">Wallpaper</div>
+        <div class="surface-meta">2 : 3 · Vertical repeat</div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- PROCESS -->
+<section class="section page" id="process">
+
+  <div class="section-head">
+    <span class="section-number">03 / Process</span>
+    <h2 class="section-title">
+      Structure<br />
+      behind the <em>swarm.</em>
+    </h2>
+  </div>
+
+  <div class="process-grid">
+
+    <article class="process-card">
+      <span class="process-number">01 / Seed</span>
+      <h3>Variation</h3>
+      <p>
+        A numeric seed initializes palette, point count, graph
+        density, boundary buffer, and ball diameter. Each
+        composition is regenerated and documented as a distinct,
+        traceable output.
+      </p>
+    </article>
+
+    <article class="process-card">
+      <span class="process-number">02 / Tension</span>
+      <h3>Geometry</h3>
+      <p>
+        A symmetric graph matrix links each point to a random subset
+        of the others. Points move with Brownian velocity, bounce at
+        the boundary, and swap state on collision — a visual
+        vocabulary drawn from network physics.
+      </p>
+    </article>
+
+    <article class="process-card">
+      <span class="process-number">03 / Surface</span>
+      <h3>Application</h3>
+      <p>
+        The resulting composition becomes a surface-design asset —
+        explored across garments, textile prints, wallpaper
+        and other pattern-driven applications.
+      </p>
+    </article>
+
+  </div>
+
+</section>
+
+<!-- ARCHIVE -->
+<section class="section page" id="archive">
+
+  <div class="section-head">
+    <span class="section-number">04 / Archive</span>
+    <h2 class="section-title">
+      Selected<br />
+      <em>seeds.</em>
+    </h2>
+  </div>
+
+  <div class="archive-grid" id="archiveGrid"></div>
+
+  <div class="archive-note">
+    <span>8 compositions · Open series</span>
+    <span class="hint">Click any plate to load it above</span>
+  </div>
+
+</section>
+
+<!-- COMMISSION -->
+<section class="commission" id="commission">
+
+  <div class="page">
+
+    <div class="commission-layout">
+
+      <div>
+        <span class="eyebrow">For brands &amp; studios</span>
+        <h2 class="commission-title">
+          One system.<br />
+          Many <em>surfaces.</em>
+        </h2>
+      </div>
+
+      <div>
+        <p class="commission-copy">
+          Brownian Graphe is a generative design system rather than
+          a single artwork. Its bouncing-graph visual language can
+          be adapted for fashion, textile development and other
+          surface-oriented contexts — while maintaining a
+          computational origin.
+        </p>
+
+        <div class="service-list">
+          <div class="service-item">
+            <span class="num">i</span>
+            <div>
+              <span class="title">Licensing</span>
+              <span class="desc">Existing seeds from the archive, licensed for production use.</span>
+            </div>
+          </div>
+          <div class="service-item">
+            <span class="num">ii</span>
+            <div>
+              <span class="title">Commission</span>
+              <span class="desc">New compositions designed to your palette, repeat and product.</span>
+            </div>
+          </div>
+          <div class="service-item">
+            <span class="num">iii</span>
+            <div>
+              <span class="title">Systems</span>
+              <span class="desc">A private generative tool built for your studio's ongoing use.</span>
+            </div>
+          </div>
+        </div>
+
+        <a class="contact-cta"
+           href="mailto:reyhanehdaneshdoost@gmail.com?subject=Brownian%20Graphe%20—%20Collaboration">
+          Begin a Conversation
+        </a>
+      </div>
+
+    </div>
+
+    <!-- MOCKUP GALLERY -->
+    <div class="mockup-gallery">
+
+      <div class="mockup-head">
+        <span class="eyebrow">Applied · Brownian Graphe</span>
+        <h3 class="mockup-title">
+          The same seed,<br />
+          <em>three surfaces.</em>
+        </h3>
+      </div>
+
+      <div class="mockup-grid">
+
+        <figure class="mockup-item">
+          <div class="mockup-frame">
+            <img src="images/tote.png" alt="Brownian Graphe tote bag — applied composition" loading="lazy" />
+          </div>
+          <figcaption>
+            <span class="mockup-id">01 / Tote</span>
+            <span class="mockup-seed">Seed 70571994</span>
+          </figcaption>
+        </figure>
+
+        <figure class="mockup-item">
+          <div class="mockup-frame">
+            <img src="images/tee.png" alt="Brownian Graphe t-shirt — applied composition" loading="lazy" />
+          </div>
+          <figcaption>
+            <span class="mockup-id">02 / Apparel</span>
+            <span class="mockup-seed">Seed 70571994</span>
+          </figcaption>
+        </figure>
+
+        <figure class="mockup-item">
+          <div class="mockup-frame">
+            <img src="images/cushion.png" alt="Brownian Graphe cushion — applied composition" loading="lazy" />
+          </div>
+          <figcaption>
+            <span class="mockup-id">03 / Interior</span>
+            <span class="mockup-seed">Seed 70571994</span>
+          </figcaption>
+        </figure>
+
+      </div>
+
+      <p class="mockup-note">
+        Each surface is drawn from the same numeric seed —
+        reproducible, licensable, adaptable to your brief.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- COLOPHON -->
+<footer class="colophon page">
+
+  <div class="col">
+    <span class="col-mark">Brownian <em>Graphe</em></span>
+    <p>
+      A catalogue of computational graph-network compositions,
+      published as an open series.
+    </p>
+  </div>
+
+  <div class="col">
+    <span class="col-title">Catalogue</span>
+    <a href="#statement">Statement</a>
+    <a href="#work">Plate 001</a>
+    <a href="#application">Surfaces</a>
+    <a href="#process">Process</a>
+    <a href="#archive">Archive</a>
+    <a href="#commission">Commission</a>
+  </div>
+
+  <div class="col">
+    <span class="col-title">Studio</span>
+    <a href="mailto:reyhanehdaneshdoost@gmail.com">reyhanehdaneshdoost@gmail.com</a>
+    <a href="https://reyrove.github.io/">Website</a>
+    <a href="https://www.instagram.com/rey._.rove/">Instagram</a>
+    <a href="https://www.linkedin.com/in/reyhaneh-daneshdoost-730481160/">LinkedIn</a>
+    <a href="https://x.com/reyrove">X</a>
+  </div>
+
+  <div class="col">
+    <span class="col-title">Legal</span>
+    <a href="#" data-legal="licensing">Licensing</a>
+    <a href="#" data-legal="terms">Terms</a>
+    <a href="#" data-legal="credits">Credits</a>
+  </div>
+
+  <div class="colophon-end">
+    <span>© <span id="year"></span> Brownian Graphe · All compositions reproducible by seed</span>
+    <span class="mark">Computational Textile Design</span>
+  </div>
+
+</footer>
+
+<!-- LEGAL MODAL -->
+<div class="legal-modal" id="legalModal" aria-hidden="true">
+  <div class="legal-overlay" data-close></div>
+
+  <div class="legal-dialog" role="dialog" aria-modal="true" aria-labelledby="legalTitle">
+    <button class="legal-close" type="button" data-close aria-label="Close">×</button>
+
+    <span class="legal-eyebrow" id="legalEyebrow">Legal</span>
+    <h3 class="legal-title" id="legalTitle">—</h3>
+    <div class="legal-body" id="legalBody"></div>
+
+    <div class="legal-foot">
+      <span>Brownian Graphe</span>
+      <a href="mailto:reyhanehdaneshdoost@gmail.com">reyhanehdaneshdoost@gmail.com</a>
+    </div>
+  </div>
 </div>
 
 <script>
-// ============================================
-// BEZIER 3 — PURE JS MINIMAL T-SHIRT EDITION
-// ============================================
+// ============================================================
+// BROWNIAN GRAPHE — GENERATIVE NETWORK SYSTEM
+// ============================================================
 
-// --- DETERMINISTIC RANDOM GENERATOR ---
 class RandomGenerator {
   constructor(seed) {
     this.seed = seed;
@@ -424,29 +1721,20 @@ class RandomGenerator {
   }
 }
 
-// --- STATE ---
-const ratio = 1 / 1;
-const prefix = 'Bezier 3';
-const features = {};
-let seed = Date.now() + Math.random() * 1000000;
+const prefix = 'BrownianGraphe';
+let seed = Math.floor(Date.now() + Math.random() * 1000000);
 let rng = new RandomGenerator(seed);
-let showingShirt = false;
+let features = {};
+
+let plateAnimFrame = null;
+let plateAnimating = false;
 let resizeTmr = null;
-let animationFrame = null;
-let isAnimating = true;
 
-// --- CANVAS VARIABLES ---
-let canvasSize = 600;
-let GraphMat = [];
-let Points = [];
-let diameters = 10;
-let velocities = [];
+function seedLabel(n) {
+  return String(n).slice(-8);
+}
 
-// --- URL PARAMS ---
-const urlSearchParams = new URLSearchParams(window.location.search);
-const urlParams = Object.fromEntries(urlSearchParams.entries());
-
-// --- COLOR ARRAYS ---
+// --- COLOR ARRAY ---
 const Backgroundcolors = [
   '#000000', '#34282C', '#3A3B3C', '#52595D', '#888B90', '#B6B6B6', '#C0C0C0', '#98AFC7',
   '#2F539B', '#2916F5', '#1F45FC', '#1589FF', '#14A3C7', '#6495ED', '#00BFFF', '#9AFEFF',
@@ -459,67 +1747,89 @@ const Backgroundcolors = [
   '#FA2A55', '#DC143C', '#FF00FF', '#DCD0FF', '#C8A2C8', '#FFF9E3', '#FFFAF0'
 ];
 
-// --- SETUP ---
-function setup() {
-  const BackgroundIndex1 = Math.floor(rng.rand() * Backgroundcolors.length);
-  const BackgroundIndex2 = Math.floor(rng.rand() * Backgroundcolors.length);
+// ============================================================
+// PURE HELPERS
+// ============================================================
 
-  features.backgroundColour1 = Backgroundcolors[BackgroundIndex1];
-  features.backgroundColour2 = Backgroundcolors[BackgroundIndex2];
-  features.numberOfstartPoint = Math.floor(rng.rand() * 12) + 3;
-  features.minimumNumlink = Math.floor(rng.rand() * (features.numberOfstartPoint - 1));
-  features.boundaryBuffer = canvasSize / (rng.rand() * 20 + 10);
-
-  GraphMat = generateSymmetricGraphMatrix(features.numberOfstartPoint, features.minimumNumlink);
-  Points = generateRandomPoints(features.numberOfstartPoint, canvasSize, canvasSize, features.boundaryBuffer);
-
-  diameters = canvasSize / (rng.rand() * 80 + 20);
-  features.balldiameter = diameters;
-
-  // Initialize velocities
-  velocities = Points.map(() => ({ vx: rng.rand() * 2 - 1, vy: rng.rand() * 2 - 1 }));
-}
-
-// --- HELPER FUNCTIONS ---
-function generateSymmetricGraphMatrix(n, m) {
-  function getRandomInt(max) {
-    return Math.floor(rng.rand() * max);
-  }
-
+function generateSymmetricGraphMatrix(n, m, r) {
+  const getRandomInt = (max) => Math.floor(r.rand() * max);
   const matrix = Array.from({ length: n }, () => Array(n).fill(0));
 
   for (let i = 0; i < n; i++) {
     let indices = new Set();
-
-    while (indices.size < m) {
+    let attempts = 0;
+    const maxAttempts = Math.max(n * 4, 32);
+    while (indices.size < m && attempts < maxAttempts) {
       const randomIndex = getRandomInt(n);
       if (randomIndex !== i) {
         indices.add(randomIndex);
         matrix[i][randomIndex] = 1;
         matrix[randomIndex][i] = 1;
       }
+      attempts++;
     }
   }
 
   return matrix;
 }
 
-function generateRandomPoints(numPoints, width, height, boundaryBuffer) {
+function generateRandomPoints(numPoints, width, height, boundaryBuffer, r) {
   const points = [];
-
   for (let i = 0; i < numPoints; i++) {
-    const x = rng.rand() * (width - 2 * boundaryBuffer) + boundaryBuffer;
-    const y = rng.rand() * (height - 2 * boundaryBuffer) + boundaryBuffer;
-    points.push({
-      x: x,
-      y: y,
-      color: '#FFFFFF',
-      touched: false
-    });
+    const x = r.rand() * (width - 2 * boundaryBuffer) + boundaryBuffer;
+    const y = r.rand() * (height - 2 * boundaryBuffer) + boundaryBuffer;
+    points.push({ x, y, color: '#FFFFFF', touched: false });
   }
-
   return points;
 }
+
+function generateVelocities(count, r) {
+  const vels = [];
+  for (let i = 0; i < count; i++) {
+    vels.push({ vx: r.rand() * 2 - 1, vy: r.rand() * 2 - 1 });
+  }
+  return vels;
+}
+
+// Builds a fresh feature set from `r` for a given canvas size.
+// Now takes real width and height so the layout fills rectangular surfaces.
+function buildFeatures(r, canvasW, canvasH) {
+  const w = canvasW || 600;
+  const h = canvasH || w;
+  const maxDim = Math.max(w, h);
+
+  const i1 = Math.floor(r.rand() * Backgroundcolors.length);
+  const i2 = Math.floor(r.rand() * Backgroundcolors.length);
+
+  const f = {};
+  f.backgroundColour1 = Backgroundcolors[i1];
+  f.backgroundColour2 = Backgroundcolors[i2];
+  f.numberOfStartPoint = Math.floor(r.rand() * 12) + 3;
+
+  f.minimumNumlink = Math.floor(r.rand() * Math.max(1, f.numberOfStartPoint - 1));
+
+  // Boundary buffer uses the smaller dimension so points stay in bounds
+  f.boundaryBuffer = Math.min(w, h) / (r.rand() * 20 + 10);
+
+  f.GraphMat = generateSymmetricGraphMatrix(f.numberOfStartPoint, f.minimumNumlink, r);
+  f.Points = generateRandomPoints(f.numberOfStartPoint, w, h, f.boundaryBuffer, r);
+  f.diameters = maxDim / (r.rand() * 80 + 20);
+  f.velocities = generateVelocities(f.Points.length, r);
+
+  return f;
+}
+
+function rebuildMainFeatures() {
+  rng = new RandomGenerator(seed);
+  const canvas = document.getElementById('target');
+  const cw = canvas ? canvas.width : 600;
+  const ch = canvas ? canvas.height : 600;
+  features = buildFeatures(rng, cw, ch);
+}
+
+// ============================================================
+// DRAWING
+// ============================================================
 
 function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -541,41 +1851,36 @@ function diagonalGradientRect(ctx, x, y, w, h, c1, c2) {
     for (let j = 0; j <= h; j += step) {
       const distToStart = Math.sqrt(i * i + j * j);
       const inter = maxDist !== 0 ? Math.min(distToStart / maxDist, 1) : 0;
-      
       const r = Math.round(c1Rgb.r + (c2Rgb.r - c1Rgb.r) * inter);
       const g = Math.round(c1Rgb.g + (c2Rgb.g - c1Rgb.g) * inter);
       const b = Math.round(c1Rgb.b + (c2Rgb.b - c1Rgb.b) * inter);
-      
       ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
       ctx.fillRect(x + i, y + j, Math.min(step, w - i), Math.min(step, h - j));
     }
   }
 }
 
-function drawGraph(ctx, matrix, pts, canvasWidth, radius) {
-  const maxDist = canvasWidth * Math.sqrt(2);
+function drawGraph(ctx, matrix, pts, canvasWidth, canvasHeight, radius) {
+  const maxDist = Math.sqrt(canvasWidth * canvasWidth + canvasHeight * canvasHeight);
 
-  // Draw lines
   for (let i = 0; i < matrix.length; i++) {
     for (let j = i + 1; j < matrix[i].length; j++) {
-      if (matrix[i][j] === 1) {
-        const point1 = pts[i];
-        const point2 = pts[j];
-        const d = Math.sqrt(Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2));
-
+      if (matrix[i][j] === 1 && pts[i] && pts[j]) {
+        const p1 = pts[i];
+        const p2 = pts[j];
+        const d = Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
         const inter = maxDist !== 0 ? Math.min(d / maxDist, 1) : 0;
         const gray = Math.round(255 - inter * 255);
         ctx.strokeStyle = 'rgb(' + gray + ',' + gray + ',' + gray + ')';
         ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.moveTo(point1.x, point1.y);
-        ctx.lineTo(point2.x, point2.y);
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
         ctx.stroke();
       }
     }
   }
 
-  // Draw points
   pts.forEach(pt => {
     ctx.fillStyle = pt.color;
     ctx.shadowColor = pt.color;
@@ -590,357 +1895,529 @@ function drawGraph(ctx, matrix, pts, canvasWidth, radius) {
   });
 }
 
-function movePoints(points, radius, rangeX, rangeY, canvasWidth, canvasHeight, boundaryBuffer, velocities) {
+// Advances points by one step using the true canvas dimensions.
+function stepMotion(f, canvasWidth, canvasHeight, r) {
+  const radius = f.diameters;
+  const rangeX = radius / 4;
+  const rangeY = radius / 4;
+  const boundaryBuffer = f.boundaryBuffer;
+  const points = f.Points;
+  const velocities = f.velocities;
   const minDistance = radius;
 
   points.forEach((point, index) => {
     const velocity = velocities[index];
+    if (!velocity) return;
 
-    const movementX = velocity.vx * rangeX;
-    const movementY = velocity.vy * rangeY;
-
-    point.x += movementX;
-    point.y += movementY;
+    point.x += velocity.vx * rangeX;
+    point.y += velocity.vy * rangeY;
 
     if (point.x < boundaryBuffer || point.x > canvasWidth - boundaryBuffer) {
       velocity.vx = -velocity.vx;
       point.x = Math.min(Math.max(point.x, boundaryBuffer), canvasWidth - boundaryBuffer);
     }
-
     if (point.y < boundaryBuffer || point.y > canvasHeight - boundaryBuffer) {
       velocity.vy = -velocity.vy;
       point.y = Math.min(Math.max(point.y, boundaryBuffer), canvasHeight - boundaryBuffer);
     }
 
-    velocity.vx += (rng.rand() * 2 - 1) * 0.05;
-    velocity.vy += (rng.rand() * 2 - 1) * 0.05;
+    velocity.vx += (r.rand() * 2 - 1) * 0.05;
+    velocity.vy += (r.rand() * 2 - 1) * 0.05;
 
-    const magnitude = Math.sqrt(velocity.vx ** 2 + velocity.vy ** 2);
-    if (magnitude > 1) {
-      velocity.vx /= magnitude;
-      velocity.vy /= magnitude;
+    const mag = Math.sqrt(velocity.vx ** 2 + velocity.vy ** 2);
+    if (mag > 1) {
+      velocity.vx /= mag;
+      velocity.vy /= mag;
     }
 
-    points.forEach((otherPoint, otherIndex) => {
+    points.forEach((other, otherIndex) => {
       if (index === otherIndex) return;
 
-      const dx = otherPoint.x - point.x;
-      const dy = otherPoint.y - point.y;
+      const dx = other.x - point.x;
+      const dy = other.y - point.y;
       const distance = Math.sqrt(dx ** 2 + dy ** 2);
 
       if (distance <= minDistance) {
         const tempVx = velocity.vx;
         const tempVy = velocity.vy;
-
         velocity.vx = velocities[otherIndex].vx;
         velocity.vy = velocities[otherIndex].vy;
-
         velocities[otherIndex].vx = tempVx;
         velocities[otherIndex].vy = tempVy;
 
         point.color = point.color === '#FFFFFF' ? '#000000' : '#FFFFFF';
-        otherPoint.color = otherPoint.color === '#FFFFFF' ? '#000000' : '#FFFFFF';
-
+        other.color = other.color === '#FFFFFF' ? '#000000' : '#FFFFFF';
         point.touched = true;
-        otherPoint.touched = true;
+        other.touched = true;
       } else {
         if (!point.touched) point.color = '#FFFFFF';
-        if (!otherPoint.touched) otherPoint.color = '#FFFFFF';
+        if (!other.touched) other.color = '#FFFFFF';
       }
     });
 
-    point.touched = point.touched && points.some(otherPoint => 
-      Math.sqrt(Math.pow(point.x - otherPoint.x, 2) + Math.pow(point.y - otherPoint.y, 2)) < minDistance
+    point.touched = point.touched && points.some(other =>
+      Math.sqrt((point.x - other.x) ** 2 + (point.y - other.y) ** 2) < minDistance
     );
   });
-
-  return { points, velocities };
 }
 
-// --- INTERACTIVE: ADD POINT ON CLICK ---
-function addPoint(x, y) {
-  const canvas = document.getElementById('target');
-  const rect = canvas.getBoundingClientRect();
-  const scaleX = canvas.width / rect.width;
-  const scaleY = canvas.height / rect.height;
-  
-  const canvasX = (x - rect.left) * scaleX;
-  const canvasY = (y - rect.top) * scaleY;
-
-  // Add new point
-  const newPoint = { x: canvasX, y: canvasY, color: '#FFFFFF', touched: false };
-  const newIndex = Points.length;
-  Points.push(newPoint);
-
-  // Add column and row to matrix
-  GraphMat.forEach(row => row.push(0));
-  GraphMat.push(Array(Points.length).fill(0));
-
-  // Connect to random subset of existing points
-  const minLinks = features.minimumNumlink || 1;
-  const maxLinks = Math.min(Points.length - 1, features.numberOfstartPoint + 2);
-  const numConnections = Math.floor(rng.rand() * (maxLinks - minLinks + 1)) + minLinks;
-  
-  const existingIndices = Array.from({ length: Points.length - 1 }, (_, i) => i);
-  // Shuffle array
-  for (let i = existingIndices.length - 1; i > 0; i--) {
-    const j = Math.floor(rng.rand() * (i + 1));
-    [existingIndices[i], existingIndices[j]] = [existingIndices[j], existingIndices[i]];
-  }
-
-  for (let i = 0; i < numConnections && i < existingIndices.length; i++) {
-    const idx = existingIndices[i];
-    GraphMat[idx][newIndex] = 1;
-    GraphMat[newIndex][idx] = 1;
-  }
-
-  // Initialize velocity for new point
-  velocities.push({ vx: rng.rand() * 2 - 1, vy: rng.rand() * 2 - 1 });
-
-  // Update UI
-  updateUI();
-}
-
-// --- MAIN DRAW ---
-function drawCanvas() {
-  if (animationFrame) {
-    cancelAnimationFrame(animationFrame);
-  }
-
-  const canvas = document.getElementById('target');
+// Draws one frame of a feature set into any canvas.
+function renderComposition(canvas, feats, r, advance) {
   const ctx = canvas.getContext('2d');
   const w = canvas.width;
   const h = canvas.height;
 
-  canvasSize = Math.min(w, h);
+  diagonalGradientRect(ctx, 0, 0, w, h, feats.backgroundColour1, feats.backgroundColour2);
 
-  // Draw gradient background
-  diagonalGradientRect(ctx, 0, 0, w, h, features.backgroundColour1, features.backgroundColour2);
+  if (advance) {
+    stepMotion(feats, w, h, r);
+  }
 
-  // Draw graph
-  drawGraph(ctx, GraphMat, Points, w, diameters);
+  drawGraph(ctx, feats.GraphMat, feats.Points, w, h, feats.diameters);
+}
 
-  // Move points
-  const result = movePoints(Points, diameters, diameters/4, diameters/4, w, h, features.boundaryBuffer * (w / canvasSize), velocities);
-  Points = result.points;
-  velocities = result.velocities;
+// ============================================================
+// PLATE (animated)
+// ============================================================
 
+function drawCanvas() {
+  const canvas = document.getElementById('target');
+  if (!canvas) return;
+
+  rebuildMainFeatures();
+  renderComposition(canvas, features, rng, false);
   updateUI();
+  drawSurfaces();
+  startPlateAnimation();
+}
 
-  if (isAnimating) {
-    animationFrame = requestAnimationFrame(drawCanvas);
+function startPlateAnimation() {
+  try {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  } catch (e) { /* ignore */ }
+  stopPlateAnimation();
+  plateAnimating = true;
+  tickPlate();
+}
+
+function stopPlateAnimation() {
+  plateAnimating = false;
+  if (plateAnimFrame) {
+    cancelAnimationFrame(plateAnimFrame);
+    plateAnimFrame = null;
   }
 }
 
-// --- UPDATE UI ---
+function tickPlate() {
+  if (!plateAnimating) return;
+  const canvas = document.getElementById('target');
+  if (!canvas) return;
+  renderComposition(canvas, features, rng, true);
+  plateAnimFrame = requestAnimationFrame(tickPlate);
+}
+
+// ============================================================
+// UI
+// ============================================================
+
 function updateUI() {
-  document.getElementById('seedDisplay').textContent = String(seed).slice(0, 8);
-  document.getElementById('pointsDisplay').textContent = Points.length || '---';
-  
-  // Count links
+  const s = document.getElementById('seedDisplay');
+  const p = document.getElementById('pointsDisplay');
+  const l = document.getElementById('linksDisplay');
+  if (s) s.textContent = seedLabel(seed);
+  if (p) p.textContent = features.Points ? features.Points.length : '—';
+
   let linkCount = 0;
-  for (let i = 0; i < GraphMat.length; i++) {
-    for (let j = i + 1; j < GraphMat[i].length; j++) {
-      if (GraphMat[i][j] === 1) linkCount++;
+  if (features.GraphMat) {
+    for (let i = 0; i < features.GraphMat.length; i++) {
+      for (let j = i + 1; j < features.GraphMat[i].length; j++) {
+        if (features.GraphMat[i][j] === 1) linkCount++;
+      }
     }
   }
-  document.getElementById('linksDisplay').textContent = linkCount || '---';
+  if (l) l.textContent = linkCount || '—';
 }
 
-// --- REGENERATE ---
+// ============================================================
+// ACTIONS
+// ============================================================
+
 function regenerate() {
-  seed = Date.now() + Math.random() * 1000000;
-  rng = new RandomGenerator(seed);
-  
-  setup();
-  
-  if (showingShirt) {
-    toggleShirt();
-  }
-  
-  isAnimating = true;
-  if (animationFrame) {
-    cancelAnimationFrame(animationFrame);
-  }
-  
+  stopPlateAnimation();
+  seed = Math.floor(Date.now() + Math.random() * 1000000);
   layoutCanvas();
 }
 
-// --- TOGGLE SHIRT ---
-function toggleShirt() {
-  showingShirt = !showingShirt;
-  const canvas = document.getElementById('target');
-  const shirtMockup = document.getElementById('shirt-mockup');
-  const shirtToggle = document.getElementById('shirtToggle');
-  
-  if (showingShirt) {
-    canvas.classList.add('hidden');
-    shirtMockup.classList.add('active');
-    shirtToggle.classList.add('active');
-    shirtToggle.innerHTML = '<span class="icon">◷</span> artwork';
-    isAnimating = false;
-    if (animationFrame) {
-      cancelAnimationFrame(animationFrame);
-    }
-  } else {
-    canvas.classList.remove('hidden');
-    shirtMockup.classList.remove('active');
-    shirtToggle.classList.remove('active');
-    shirtToggle.innerHTML = '<span class="icon">◷</span> apparel';
-    isAnimating = true;
-    drawCanvas();
-  }
-}
-
-// --- SAVE ---
-function saveImage() {
+function autoDownloadCanvas() {
+  const wasAnimating = plateAnimating;
+  stopPlateAnimation();
   const canvas = document.getElementById('target');
   const link = document.createElement('a');
-  const seedStr = String(seed).slice(0, 8);
+  const seedStr = seedLabel(seed);
   link.download = prefix + '_Seed' + seedStr + '.png';
-  
-  if (showingShirt) {
-    link.href = document.getElementById('shirt-mockup').src;
-  } else {
-    link.href = canvas.toDataURL('image/png', 1.0);
-  }
+  link.href = canvas.toDataURL('image/png', 1.0);
   link.click();
+  if (wasAnimating) startPlateAnimation();
 }
 
-// --- LAYOUT CANVAS ---
 function layoutCanvas() {
-  if (animationFrame) {
-    cancelAnimationFrame(animationFrame);
-  }
-  
   const container = document.getElementById('canvas-container');
-  const containerRect = container.getBoundingClientRect();
-  let maxWidth = containerRect.width;
-  let maxHeight = containerRect.height;
-  
-  maxWidth = Math.max(maxWidth, 80);
-  maxHeight = Math.max(maxHeight, 80);
-  
-  let cWidth = maxWidth;
-  let cHeight = cWidth / ratio;
-  
-  if (cHeight > maxHeight) {
-    cHeight = maxHeight;
-    cWidth = maxHeight * ratio;
-  }
-  
-  cWidth = Math.max(cWidth, 80);
-  cHeight = Math.max(cHeight, 80);
-  
+  if (!container) return;
+  const rect = container.getBoundingClientRect();
+
+  const pad = 40;
+  const maxW = Math.max(rect.width - pad, 200);
+  const maxH = Math.max(rect.height - pad, 200);
+
+  let cW = maxW, cH = cW;
+  if (cH > maxH) { cH = maxH; cW = maxH; }
+
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  
-  let targetWidth = cWidth * dpr;
-  let targetHeight = cHeight * dpr;
-  
-  if ('forceWidth' in urlParams) {
-    targetWidth = parseInt(urlParams.forceWidth);
-    targetHeight = Math.floor(targetWidth / ratio);
-    dpr = 1;
-  }
-  
   const canvas = document.getElementById('target');
-  canvas.width = targetWidth;
-  canvas.height = targetHeight;
-  canvas.style.width = cWidth + 'px';
-  canvas.style.height = cHeight + 'px';
-  
-  const shirtMockup = document.getElementById('shirt-mockup');
-  shirtMockup.style.width = cWidth + 'px';
-  shirtMockup.style.height = cHeight + 'px';
-  
-  canvasSize = Math.min(targetWidth, targetHeight);
-  
-  // Recalculate with new size
-  setup();
-  
+  canvas.width = cW * dpr;
+  canvas.height = cH * dpr;
+  canvas.style.width = cW + 'px';
+  canvas.style.height = cH + 'px';
+
   drawCanvas();
 }
 
-// --- RESIZE ---
-function handleResize() {
+// ============================================================
+// COVER (static)
+// ============================================================
+
+let coverSeed = Math.floor(Date.now() + Math.random() * 1000000);
+
+function drawCover() {
+  const canvas = document.getElementById('coverCanvas');
+  if (!canvas) return;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const size = Math.min(720, Math.max(280, Math.floor(rect.width)));
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  canvas.width = size * dpr;
+  canvas.height = size * dpr;
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+
+  const cr = new RandomGenerator(coverSeed);
+  const f = buildFeatures(cr, canvas.width, canvas.height);
+  renderComposition(canvas, f, cr, false);
+}
+
+function initCover() {
+  coverSeed = Math.floor(Date.now() + Math.random() * 1000000);
+  drawCover();
+}
+
+// ============================================================
+// FRAMED PLATE (static)
+// ============================================================
+
+function drawFramedPlate() {
+  const canvas = document.getElementById('frameCanvas');
+  if (!canvas) return;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const size = Math.max(240, Math.floor(rect.width));
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  canvas.width = size * dpr;
+  canvas.height = size * dpr;
+  canvas.style.width = '100%';
+  canvas.style.height = 'auto';
+
+  const r = new RandomGenerator(seed);
+  const f = buildFeatures(r, canvas.width, canvas.height);
+  renderComposition(canvas, f, r, false);
+}
+
+// ============================================================
+// SURFACES (static)
+// ============================================================
+
+const surfaceIds = ['surfacePrint', 'surfaceScarf', 'surfaceTextile', 'surfaceWall'];
+
+function drawSurfaces() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+
+  surfaceIds.forEach(id => {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+    const wrap = canvas.parentElement;
+    const wrapRect = wrap.getBoundingClientRect();
+
+    const wCss = Math.max(120, Math.floor(wrapRect.width));
+    const hCss = Math.max(80, Math.floor(wrapRect.height));
+
+    canvas.width = wCss * dpr;
+    canvas.height = hCss * dpr;
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+
+    const r = new RandomGenerator(seed);
+    const f = buildFeatures(r, canvas.width, canvas.height);
+    renderComposition(canvas, f, r, false);
+  });
+}
+
+// ============================================================
+// ARCHIVE
+// ============================================================
+
+const archiveSeeds = [];
+
+function initArchive() {
+  const grid = document.getElementById('archiveGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  archiveSeeds.length = 0;
+
+  const base = Date.now();
+  const used = new Set();
+
+  for (let i = 0; i < 8; i++) {
+    let s;
+    do {
+      s = base + Math.floor(Math.random() * 1000000) + i * 97;
+    } while (used.has(s));
+    used.add(s);
+    archiveSeeds.push(s);
+
+    const item = document.createElement('div');
+    item.className = 'archive-item';
+    item.setAttribute('data-seed', seedLabel(s));
+    const cv = document.createElement('canvas');
+    item.appendChild(cv);
+    item.addEventListener('click', () => loadArchiveSeed(i));
+    grid.appendChild(item);
+  }
+  drawArchive();
+}
+
+function drawArchive() {
+  const grid = document.getElementById('archiveGrid');
+  if (!grid) return;
+  const items = grid.querySelectorAll('.archive-item');
+  items.forEach((item, i) => {
+    const cv = item.querySelector('canvas');
+    if (!cv) return;
+    const rect = item.getBoundingClientRect();
+    const size = Math.max(120, Math.floor(rect.width));
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    cv.width = size * dpr;
+    cv.height = size * dpr;
+    cv.style.width = '100%';
+    cv.style.height = '100%';
+
+    const r = new RandomGenerator(archiveSeeds[i]);
+    const f = buildFeatures(r, cv.width, cv.height);
+    renderComposition(cv, f, r, false);
+  });
+}
+
+function loadArchiveSeed(index) {
+  stopPlateAnimation();
+  seed = archiveSeeds[index];
+  layoutCanvas();
+  drawFramedPlate();
+  drawSurfaces();
+  updateUI();
+  document.getElementById('work').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ============================================================
+// CLICK-TO-ADD (Plate only)
+// ============================================================
+
+function addPointOnCanvas(clientX, clientY) {
+  const canvas = document.getElementById('target');
+  if (!canvas || !features.Points) return;
+
+  const rect = canvas.getBoundingClientRect();
+
+  if (clientX < rect.left || clientX > rect.right) return;
+  if (clientY < rect.top || clientY > rect.bottom) return;
+
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const x = (clientX - rect.left) * scaleX;
+  const y = (clientY - rect.top) * scaleY;
+
+  const newIndex = features.Points.length;
+  features.Points.push({ x, y, color: '#FFFFFF', touched: false });
+
+  features.GraphMat.forEach(row => row.push(0));
+  features.GraphMat.push(Array(features.Points.length).fill(0));
+
+  const minLinks = features.minimumNumlink || 1;
+  const maxLinks = Math.max(minLinks, Math.min(features.Points.length - 1, features.numberOfStartPoint + 2));
+  const numConnections = Math.floor(rng.rand() * (maxLinks - minLinks + 1)) + minLinks;
+
+  const existing = Array.from({ length: features.Points.length - 1 }, (_, i) => i);
+  for (let i = existing.length - 1; i > 0; i--) {
+    const j = Math.floor(rng.rand() * (i + 1));
+    [existing[i], existing[j]] = [existing[j], existing[i]];
+  }
+
+  for (let i = 0; i < numConnections && i < existing.length; i++) {
+    const idx = existing[i];
+    features.GraphMat[idx][newIndex] = 1;
+    features.GraphMat[newIndex][idx] = 1;
+  }
+
+  features.velocities.push({ vx: rng.rand() * 2 - 1, vy: rng.rand() * 2 - 1 });
+  updateUI();
+}
+
+// ============================================================
+// LEGAL MODAL
+// ============================================================
+
+const legalContent = {
+  licensing: {
+    eyebrow: 'Legal · 01',
+    title: 'Licensing',
+    body: `
+      <p>All Brownian Graphe compositions are <strong>seed-documented</strong> and available for licensing across textile, surface, and print applications.</p>
+      <p>Standard licenses cover single-product production runs. For commercial use, custom editions, or exclusive rights, please contact the studio directly to discuss scope and terms.</p>
+      <p>Each license is issued against a specific seed ID. Regeneration of the same seed produces the identical composition — ensuring reproducibility between artist, studio, and manufacturer.</p>
+    `
+  },
+  terms: {
+    eyebrow: 'Legal · 02',
+    title: 'Terms',
+    body: `
+      <p>All artwork, code, and generative systems presented in this catalogue are the <strong>intellectual property of the artist</strong>.</p>
+      <p>Compositions may not be reproduced, redistributed, resold, or adapted without a written license. Seed documentation is provided for traceability and archival purposes only.</p>
+      <p>Usage of this website constitutes acceptance of these terms. For questions regarding permitted use, please reach out via email.</p>
+    `
+  },
+  credits: {
+    eyebrow: 'Legal · 03',
+    title: 'Credits',
+    body: `
+      <p><strong>Design & Generative System</strong><br>Reyhaneh Daneshdoost</p>
+      <p><strong>Typefaces</strong><br>Cormorant Garamond · DM Mono</p>
+      <p><strong>Platform</strong><br>Reyrove Studio</p>
+      <p><strong>Edition</strong><br>Brownian Graphe — Autumn 2026</p>
+    `
+  }
+};
+
+function initLegalModal() {
+  const modal = document.getElementById('legalModal');
+  const eyebrow = document.getElementById('legalEyebrow');
+  const titleEl = document.getElementById('legalTitle');
+  const bodyEl = document.getElementById('legalBody');
+  if (!modal) return;
+
+  function openLegal(key) {
+    const data = legalContent[key];
+    if (!data) return;
+    eyebrow.textContent = data.eyebrow;
+    titleEl.textContent = data.title;
+    bodyEl.innerHTML = data.body;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLegal() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-legal]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      openLegal(link.getAttribute('data-legal'));
+    });
+  });
+
+  modal.querySelectorAll('[data-close]').forEach(el => {
+    el.addEventListener('click', closeLegal);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeLegal();
+  });
+}
+
+// ============================================================
+// EVENTS
+// ============================================================
+
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input,textarea')) return;
+  const k = e.key.toLowerCase();
+  if (k === 's') { e.preventDefault(); autoDownloadCanvas(); }
+  if (k === 'r') { e.preventDefault(); regenerate(); }
+});
+
+document.getElementById('controlsBar')?.addEventListener('click', regenerate);
+document.getElementById('saveBtn')?.addEventListener('click', autoDownloadCanvas);
+
+const targetCanvas = document.getElementById('target');
+targetCanvas?.addEventListener('click', e => {
+  addPointOnCanvas(e.clientX, e.clientY);
+});
+targetCanvas?.addEventListener('touchend', e => {
+  if (e.changedTouches && e.changedTouches[0]) {
+    addPointOnCanvas(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+    e.preventDefault();
+  }
+});
+
+window.addEventListener('resize', () => {
   clearTimeout(resizeTmr);
   resizeTmr = setTimeout(() => {
     layoutCanvas();
-  }, 100);
-}
-
-// --- KEYBOARD ---
-document.addEventListener('keydown', function(e) {
-  if (e.key === 's' || e.key === 'S') {
-    e.preventDefault();
-    saveImage();
-  }
-  if (e.key === 'r' || e.key === 'R') {
-    e.preventDefault();
-    regenerate();
-  }
-  if (e.key === 't' || e.key === 'T') {
-    e.preventDefault();
-    toggleShirt();
-  }
+    drawCover();
+    drawArchive();
+    drawFramedPlate();
+    drawSurfaces();
+  }, 150);
 });
 
-// --- CONTROLS ---
-document.getElementById('controlsBar').addEventListener('click', regenerate);
-document.getElementById('controlsBar').addEventListener('touchend', function(e) {
-  e.preventDefault();
-  regenerate();
+window.addEventListener('orientationchange', () => {
+  setTimeout(() => {
+    layoutCanvas();
+    drawFramedPlate();
+    drawSurfaces();
+  }, 400);
 });
 
-document.getElementById('shirtToggle').addEventListener('click', toggleShirt);
-document.getElementById('shirtToggle').addEventListener('touchend', function(e) {
-  e.preventDefault();
-  toggleShirt();
-});
-
-// --- CANVAS CLICK ---
-document.getElementById('canvas-container').addEventListener('click', function(e) {
-  if (!showingShirt) {
-    addPoint(e.clientX, e.clientY);
-  }
-});
-
-document.getElementById('canvas-container').addEventListener('touchend', function(e) {
-  if (!showingShirt) {
-    const touch = e.changedTouches[0];
-    addPoint(touch.clientX, touch.clientY);
-    e.preventDefault();
-  }
-});
-
-// --- WINDOW ---
-window.addEventListener('resize', handleResize);
-window.addEventListener('orientationchange', function() {
-  setTimeout(handleResize, 400);
-});
-
-// --- VISIBILITY ---
-document.addEventListener('visibilitychange', function() {
+document.addEventListener('visibilitychange', () => {
   if (!document.hidden) {
     setTimeout(() => {
-      if (!showingShirt && isAnimating) {
-        drawCanvas();
-      }
-    }, 100);
+      drawCanvas();
+      drawFramedPlate();
+      drawSurfaces();
+    }, 120);
+  } else {
+    stopPlateAnimation();
   }
 });
 
-// --- INIT ---
+// ============================================================
+// INIT
+// ============================================================
+
 function init() {
-  setup();
+  const y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+
+  seed = Math.floor(Date.now() + Math.random() * 1000000);
+
   layoutCanvas();
+  initCover();
+  initArchive();
   updateUI();
-  
-  console.log('Bezier 3 — Pure JS Minimal T-Shirt Edition');
-  console.log('◷ Press T to toggle apparel view');
-  console.log('Press S to save');
-  console.log('Press R to regenerate');
-  console.log('Click on canvas to add points');
+
+  drawFramedPlate();
+  drawSurfaces();
+  initLegalModal();
 }
 
 if (document.readyState === 'loading') {
@@ -950,11 +2427,13 @@ if (document.readyState === 'loading') {
 }
 
 window.regenerate = regenerate;
-window.saveImage = saveImage;
-window.toggleShirt = toggleShirt;
+window.autoDownloadCanvas = autoDownloadCanvas;
 window.drawCanvas = drawCanvas;
 window.layoutCanvas = layoutCanvas;
-window.addPoint = addPoint;
+window.addPointOnCanvas = addPointOnCanvas;
+window.startPlateAnimation = startPlateAnimation;
+window.stopPlateAnimation = stopPlateAnimation;
 </script>
+
 </body>
 </html>
